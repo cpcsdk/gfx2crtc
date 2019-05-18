@@ -43,7 +43,7 @@ int main(int argc, char **argv)
 
   if((argc != 3) && (argc != 4) && (argc != 5) && (argc != 6) && (argc != 7))
   {
-    printf("Utilisation : %s input_filename output_filename [registre9] [mode] "
+    printf("Usage : %s input_filename output_filename [registre9] [mode] "
     "[r12] [r13]\n",argv[0]);
     exit(0);
   }
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
     // sscanf(argv[4],"%hhu",&mode);
     sscanf(argv[4],"%u",&stupid_mingw_isnt_c99); mode = stupid_mingw_isnt_c99;
     forcemode = 1;
-    if(mode > 3) puts("mode doit être compris entre 0 et 3");
+    if(mode > 3) puts("mode must be in range 0 to 3");
     mode = mode & 3;
   }
 
@@ -83,7 +83,7 @@ int main(int argc, char **argv)
 
   if (inFile == NULL)
   {
-    printf("Fichier Inexistant\n");
+    printf("Input file does not exist\n");
     exit(1);
   }
 
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
   is_png = !png_sig_cmp(header, 0, 8);
   if (!is_png)
   {
-    printf("Ce n'est pas un png\n");
+    printf("Input is not a PNG file\n");
     exit(2);
   }
 
@@ -131,8 +131,7 @@ int main(int argc, char **argv)
   if(!((colorType == PNG_COLOR_TYPE_GRAY)
   	|| (colorType == PNG_COLOR_TYPE_PALETTE)))
   {
-    puts("Ce PNG n'est pas dans un format exploitable "
-    	"(niveaux de gris ou palette)");
+    puts("Input is not in usable PNG format (palette or grayscale needed)");
     return (ERROR);
   }
 
@@ -157,8 +156,8 @@ int main(int argc, char **argv)
       }
       default:
       {
-        puts("Ce PNG n'est pas dans un format exploitable"
-        	"(bitdepth = 1, 2 ou 4)");
+        puts("Input PNG has invalid bit depth (must be 1, 2 or 4 unless mode "
+			"is specified)");
         return (ERROR);
       }
     }
@@ -170,7 +169,7 @@ int main(int argc, char **argv)
   inBuffer = (unsigned char*)malloc(width*height);
   if (inBuffer == NULL)
   {
-    printf("Allocation inBuffer raté\n");
+    printf("Failed to allocate input buffer\n");
     exit(3);
   }
 
@@ -184,10 +183,15 @@ int main(int argc, char **argv)
 
   outBuffer = raw2crtc(inBuffer, width, height, mode, r9, &outSize, &r1, r12, r13, &r6);
 
-  printf("Taille de l'écran de sortie : %lu\n",outSize);
-  printf("Mode = %d  Largeur = %d  Hauteur = %d  R1 = %d  R9 = %d R6 = %d\n",mode,(int)width,(int)height,r1,r9,r6);
+  printf("Output screen size: %lu\n",outSize);
+  printf("Mode = %d  Width = %d  Height = %d  R1 = %d  R9 = %d R6 = %d\n",mode,(int)width,(int)height,r1,r9,r6);
 
   outFile = fopen(argv[2], "wb");
+  if (outFile == NULL) {
+	printf("Unable to open output file.\n");
+	exit(4);
+  }
+
   fwrite(outBuffer, 1, outSize, outFile);
   fclose(outFile);
 
