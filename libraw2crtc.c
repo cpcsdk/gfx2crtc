@@ -101,14 +101,14 @@ unsigned char *raw2crtc(unsigned char *input, unsigned short width, unsigned sho
   tmpBuffer = (unsigned char*)malloc(0xFFFF);
   if (tmpBuffer == NULL)
   {
-    printf("Allocation tmpBuffer raté\n");
+    printf("Failed to allocate tmpbuffer\n");
     exit(4);
   }
 
   allocationBuffer = (unsigned char*)calloc(0xFFFF, 1);
   if(allocationBuffer == NULL)
   {
-    printf("Allocation allocationBuffer raté\n");
+    printf("Failed to allocate allocationBuffer\n");
     exit(4);
   }
 
@@ -142,7 +142,7 @@ unsigned char *raw2crtc(unsigned char *input, unsigned short width, unsigned sho
 	  {
 	    if(*(allocationBuffer + i) > 1)
 	    {
-	      printf("Attention : Ecriture multiple a l'adresse mémoire %d\n",i);
+	      printf("Warning: multiple writes to address %d (picture larger than display?)\n",i);
 	    }
 	    if(*(allocationBuffer + i) > 0)
 	    {
@@ -161,7 +161,7 @@ unsigned char *raw2crtc(unsigned char *input, unsigned short width, unsigned sho
   outBuffer = (unsigned char*)malloc((*outSize));
   if (outBuffer == NULL)
   {
-    printf("Allocation outBuffer raté\n");
+    printf("Failed to allocate outBuffer\n");
     exit(4);
   }
 
