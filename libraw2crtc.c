@@ -57,7 +57,7 @@ unsigned char *raw2crtc(unsigned char *input, unsigned short width, unsigned sho
   unsigned char *allocationBuffer;
   unsigned short minAddr = 0;
   unsigned char minAddrIsDefined = 0;
-  unsigned short maxAddr;
+  unsigned short maxAddr = 0;
 
   unsigned char nbPixPerByte;
   int y,x;

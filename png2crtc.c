@@ -22,9 +22,8 @@ int main(int argc, char **argv)
   png_uint_32 height;
   int bitdepth;
   int colorType;
-  unsigned char mode;
-  unsigned char forcemode = 0;
-  unsigned char forcer12 = 0, forcer13 = 0;
+  static unsigned char mode;
+  static unsigned char forcemode = 0;
 
   unsigned char header[8];
   unsigned char is_png;
@@ -72,13 +71,11 @@ int main(int argc, char **argv)
   {
     // sscanf(argv[5],"%hhu",&r12);
     sscanf(argv[5],"%u",&stupid_mingw_isnt_c99); r12 = stupid_mingw_isnt_c99;
-    forcer12 = 1;
   }
   if(argc >= 7)
   {
     // sscanf(argv[6],"%hhu",&r13);
     sscanf(argv[6],"%u",&stupid_mingw_isnt_c99); r13=stupid_mingw_isnt_c99;
-    forcer13 = 1;
   }
 
   if (inFile == NULL)
